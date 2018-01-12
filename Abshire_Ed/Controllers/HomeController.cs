@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Abshire_Ed.Models;
 
 namespace Abshire_Ed.Controllers
 {
@@ -9,9 +10,9 @@ namespace Abshire_Ed.Controllers
             return View();
         }
 
-        public IActionResult Page2()
+        public IActionResult Page2(PersonModel person)
         {
-            return View();
+            return View(person);
         }
     }
 }

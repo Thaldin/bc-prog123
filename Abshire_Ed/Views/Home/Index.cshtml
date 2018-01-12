@@ -1,14 +1,33 @@
 ﻿@{
     Layout = null;
 }
+@model Abshire_Ed.Models.PersonModel
 
 <!doctype html>
 <html>
-    <head>
-        <title>Prog 123 - Index</title>
-    </head>
-    <body>
-        <p>Hello, World from the Index.</p>
-        <p><a href="@Url.Action("Page2", "Home")">Go to Page2.</a></p>    
-    </body>
+<head>
+    <title>Prog 123 - Index</title>
+</head>
+<body>
+    <p>Hello, World from the Index.</p>
+    <p><a href="@Url.Action("Page2", "Home")">Go to Page2.</a></p>
+
+    <form id="PersonForm" asp-action="Page2" method="post">
+        <label for="firstname">First Name: </label>
+        <input id="firstname" type="text" asp-for="FirstName"/><br />
+        <label for="lastname">Last Name: </label>
+        <input id="lastname" type="text" asp-for="LastName"/><br />
+        <label for="email">Email: </label>
+        <input id="email" type="email" asp-for="Email"/><br />
+        <label for="phone">Phone Number: </label>
+        <input id="phone" type="text" asp-for="Phone"/><br />
+        <label for="address">Address: </label>
+        <input id="address" type="text" asp-for="Address" /><br />
+        <label for="username">Username: </label>
+        <input id="username" type="text" asp-for="Username"/><br />
+        <label for="password">Password: </label>
+        <input id="password" type="password" asp-for="Password" /><br />
+        <button type="submit">Submit</button>
+    </form>
+</body>
 </html>
