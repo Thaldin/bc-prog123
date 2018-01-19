@@ -1,10 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Abshire_Ed.Models;
+using Abshire_Ed.DAL;
+
 
 namespace Abshire_Ed.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IConfiguration _configuration;
+
+        public HomeController(IConfiguration config)
+        {
+            _configuration = config;    
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -12,6 +22,8 @@ namespace Abshire_Ed.Controllers
 
         public IActionResult Page2(PersonModel person)
         {
+            var personDal = new PersonDAL(_configuration);
+            int personId = personDal.InsertPerson(person);
             return View(person);
         }
     }
