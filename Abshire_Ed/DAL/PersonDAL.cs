@@ -4,16 +4,62 @@ using System.Data;
 using System.Data.SqlClient;
 using Abshire_Ed.Models;
 
-
 namespace Abshire_Ed.DAL
 {
     public class PersonDAL
     {
         private readonly IConfiguration _configuration;
 
+        const string _connStrKey = "MyConnString";
+
         public PersonDAL(IConfiguration config)
         {
             _configuration = config;
+        }
+
+        public PersonModel GetPerson(string id)
+        {
+            const string personSelect = "SELECT * FROM [dbo].[Person] WHERE PersonId = @pId";
+
+            SqlConnection conn = null;
+
+            try
+            {
+                // Get Sql Connection
+                conn = GetConnection(_connStrKey);
+                conn.Open();
+
+                // Insert into Person table
+                var sqlCmd = new SqlCommand(personSelect, conn);
+                sqlCmd.Parameters.AddWithValue("@pId", id);
+                
+                var sqlReader = sqlCmd.ExecuteReader();
+                sqlReader.Read();
+                var person = new PersonModel()
+                {
+                    FirstName = sqlReader["FName"].ToString(),
+                    LastName = sqlReader["LName"].ToString(),
+                    Address = sqlReader["address"].ToString(),
+                    Email = sqlReader["email"].ToString(),
+                    Phone = sqlReader["phone"].ToString(),
+                    Username = sqlReader["username"].ToString()
+                };
+                
+                sqlReader.Close();
+
+                return person;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Error retreiving person from database: " + e.Message, e);
+            }
+            finally
+            {
+                if (conn != null && conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                }
+            }
         }
 
         public int InsertPerson(PersonModel person)
@@ -26,16 +72,8 @@ namespace Abshire_Ed.DAL
 
             try
             {
-                // Get Connection
-                var connStr = _configuration.GetConnectionString("MyConnString");
-
-                if (string.IsNullOrEmpty(connStr))
-                {
-                    throw new ArgumentNullException("connStr", "SqlConnection string is null.");
-                }
-
                 // Get Sql Connection
-                conn = new SqlConnection(connStr);
+                conn = GetConnection(_connStrKey);
                 conn.Open();
 
                 // Insert into Person table
@@ -71,6 +109,20 @@ namespace Abshire_Ed.DAL
                     conn.Close();
                 }
             }
+        }
+
+        private SqlConnection GetConnection(string connKey)
+        {
+            // Get Connection
+            var connStr = _configuration.GetConnectionString(connKey);
+
+            if (string.IsNullOrEmpty(connStr))
+            {
+                throw new ArgumentNullException("connStr", "SqlConnection string is null.");
+            }
+
+            // Get Sql Connection
+            return new SqlConnection(connStr);
         }
     }
 }
