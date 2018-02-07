@@ -17,6 +17,43 @@ namespace Abshire_Ed.DAL
             _configuration = config;
         }
 
+        public void UpdatePerson(PersonModel person)
+        {
+            const string personUpdate = "UPDATE [dbo].[Person] SET [FName] = @FName, [LName] = @LName, [email] = @email, [phone] = @phone, [address] = @address, [UserName] = @userName WHERE [PersonId] = @id";
+
+            SqlConnection conn = null;
+
+            try
+            {
+                // Get Sql Connection
+                conn = GetConnection(_connStrKey);
+                conn.Open();
+
+                // Insert into Person table
+                var sqlCmd = new SqlCommand(personUpdate, conn);
+                sqlCmd.Parameters.AddWithValue("@FName", person.FirstName);
+                sqlCmd.Parameters.AddWithValue("@LName", person.LastName);
+                sqlCmd.Parameters.AddWithValue("@email", person.Email);
+                sqlCmd.Parameters.AddWithValue("@phone", person.Phone);
+                sqlCmd.Parameters.AddWithValue("@address", person.Address);
+                sqlCmd.Parameters.AddWithValue("@userName", person.Username);
+                sqlCmd.Parameters.AddWithValue("@id", person.PersonId.ToString());
+
+                sqlCmd.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Error updating person in the database: " + e.Message, e);
+            }
+            finally
+            {
+                if (conn != null && conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                }
+            }
+        }
+
         public PersonModel GetPerson(string id)
         {
             const string personSelect = "SELECT * FROM [dbo].[Person] WHERE PersonId = @pId";
