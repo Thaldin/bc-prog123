@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Abshire_Ed.Models;
@@ -37,6 +38,17 @@ namespace Abshire_Ed.Controllers
             var personDal = new PersonDAL(_configuration);
             var person = personDal.GetPerson(id);
             return View(person);
+        }
+
+        public IActionResult UpdatePerson(PersonModel person)
+        {
+            var personDal = new PersonDAL(_configuration);
+            var id = HttpContext.Session.GetString(personIdKey);
+
+            person.PersonId = Convert.ToInt32(id);
+            personDal.UpdatePerson(person);
+
+            return View("Page2", person);
         }
     }
 }
