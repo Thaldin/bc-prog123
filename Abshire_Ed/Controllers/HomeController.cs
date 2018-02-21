@@ -50,5 +50,15 @@ namespace Abshire_Ed.Controllers
 
             return View("Page2", person);
         }
+
+        public IActionResult DeletePerson()
+        {
+            var id = HttpContext.Session.GetString(personIdKey);
+            var personDal = new PersonDAL(_configuration);
+            var person = personDal.GetPerson(id);
+            personDal.DeletePerson(id);
+
+            return View(person);
+        }
     }
 }

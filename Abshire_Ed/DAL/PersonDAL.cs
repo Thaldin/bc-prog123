@@ -17,6 +17,42 @@ namespace Abshire_Ed.DAL
             _configuration = config;
         }
 
+        public void DeletePerson(string id)
+        {
+            const string personDelete = "DELETE FROM dbo.Person WHERE [PersonID] = @PersonId ";
+            const string credsDelete = "DELETE FROM dbo.Credentials WHERE [PersonID] = @PersonId ";
+
+            SqlConnection conn = null;
+
+            try
+            {
+                // Get Sql Connection
+                conn = GetConnection(_connStrKey);
+                conn.Open();
+
+                // Delete Credentials
+                var sqlCmd = new SqlCommand(credsDelete, conn);
+                sqlCmd.Parameters.AddWithValue("@PersonId", Convert.ToInt32(id));
+                sqlCmd.ExecuteNonQuery();
+
+                // Delete Person
+                sqlCmd = new SqlCommand(personDelete, conn);
+                sqlCmd.Parameters.AddWithValue("@PersonId", Convert.ToInt32(id));
+                sqlCmd.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Error delting record from the database: " + e.Message, e);
+            }
+            finally
+            {
+                if (conn != null && conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                }
+            }
+        }
+
         public void UpdatePerson(PersonModel person)
         {
             const string personUpdate = "UPDATE [dbo].[Person] SET [FName] = @FName, [LName] = @LName, [email] = @email, [phone] = @phone, [address] = @address, [UserName] = @userName WHERE [PersonId] = @id";
