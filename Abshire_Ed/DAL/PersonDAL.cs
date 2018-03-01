@@ -17,6 +17,56 @@ namespace Abshire_Ed.DAL
             _configuration = config;
         }
 
+        public CompactPersonModel CheckUser(string userName, string pwd)
+        {
+            const string checkUser = "SELECT Person.PersonId, Person.FName FROM dbo.Person INNER JOIN Credentials ON dbo.Person.PersonID = dbo.Credentials.PersonID" +
+                                     " WHERE(dbo.Person.UserName = @user) AND(dbo.Credentials.Password = @pwd)";
+
+            SqlConnection conn = null;
+
+            try
+            {
+                // Get Sql Connection
+                conn = GetConnection(_connStrKey);
+                conn.Open();
+
+                // Check User
+                var sqlCmd = new SqlCommand(checkUser, conn);
+                sqlCmd.Parameters.AddWithValue("@user", userName);
+                sqlCmd.Parameters.AddWithValue("@pwd", pwd);
+
+                var sqlReader = sqlCmd.ExecuteReader();
+
+                CompactPersonModel personData = null;
+
+                if (sqlReader.HasRows)
+                {
+                    sqlReader.Read();
+
+                    personData = new CompactPersonModel()
+                    {
+                        FirstName = sqlReader["FName"].ToString(),
+                        PersonId = Convert.ToInt32(sqlReader["PersonId"])
+                    };
+
+                    sqlReader.Close();
+                }
+
+                return personData;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Error retreiving credentials from the database: " + e.Message, e);
+            }
+            finally
+            {
+                if (conn != null && conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                }
+            }
+        }
+
         public void DeletePerson(string id)
         {
             const string personDelete = "DELETE FROM dbo.Person WHERE [PersonID] = @PersonId ";

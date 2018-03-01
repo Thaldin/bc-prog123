@@ -1,5 +1,5 @@
 ﻿@{
-    Layout = null;
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @model Abshire_Ed.Models.PersonModel
 
@@ -9,7 +9,7 @@
         <title>Prog 123 - Page 2</title>
     </head>
     <body>
-        <h1>Hello, World from Page2.</h1>
+        <h1>Hello, @Model.FirstName.  You may edit or delete your account here.</h1>
         <br />
         First Name: @Model.FirstName<br />
         Last Name: @Model.LastName<br />

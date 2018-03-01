@@ -34,10 +34,6 @@
     }
 }
 
-#userInfo {
-    text-align:right;
-}
-
-#menu {
-    width: 100%;
+#errorMsg {
+    color: red;
 }

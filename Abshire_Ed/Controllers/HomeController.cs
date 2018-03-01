@@ -11,6 +11,7 @@ namespace Abshire_Ed.Controllers
     public class HomeController : Controller
     {
         const string personIdKey = "personId";
+        const string firstNameKey = "fName";
 
         private readonly IConfiguration _configuration;
 
@@ -21,11 +22,14 @@ namespace Abshire_Ed.Controllers
 
         public IActionResult Index()
         {
+            InitView();
             return View();
         }
 
         public IActionResult Page2(PersonModel person)
         {
+            InitView();
+
             var personDal = new PersonDAL(_configuration);
             int personId = personDal.InsertPerson(person);
             HttpContext.Session.SetString(personIdKey, personId.ToString());
@@ -34,6 +38,8 @@ namespace Abshire_Ed.Controllers
 
         public IActionResult EditPerson()
         {
+            InitView();
+
             var id = HttpContext.Session.GetString(personIdKey);
             var personDal = new PersonDAL(_configuration);
             var person = personDal.GetPerson(id);
@@ -42,17 +48,23 @@ namespace Abshire_Ed.Controllers
 
         public IActionResult UpdatePerson(PersonModel person)
         {
+            InitView();
+
             var personDal = new PersonDAL(_configuration);
             var id = HttpContext.Session.GetString(personIdKey);
 
             person.PersonId = Convert.ToInt32(id);
             personDal.UpdatePerson(person);
 
+            HttpContext.Session.SetString(firstNameKey, person.FirstName);
+
             return View("Page2", person);
         }
 
         public IActionResult DeletePerson()
         {
+            InitView();
+
             var id = HttpContext.Session.GetString(personIdKey);
             var personDal = new PersonDAL(_configuration);
             var person = personDal.GetPerson(id);
@@ -60,5 +72,16 @@ namespace Abshire_Ed.Controllers
 
             return View(person);
         }
+
+        private void InitView()
+        {
+            ViewBag.ShowLoginForm = string.IsNullOrEmpty(HttpContext.Session.GetString(personIdKey));
+
+            if (!string.IsNullOrEmpty(HttpContext.Session.GetString(firstNameKey)))
+            {
+                ViewBag.UserFirstName = HttpContext.Session.GetString(firstNameKey);
+            }
+        }
+
     }
 }
