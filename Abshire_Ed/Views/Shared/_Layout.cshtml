@@ -26,13 +26,22 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Abshire_Ed</a>
+                <a asp-area="" asp-controller="Abshire" asp-action="Index" class="navbar-brand">Thaldin's Commission Miniatures</a>
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+                <ul id="menu" class="nav navbar-nav">
+                    <li><a asp-area="" asp-controller="Abshire" asp-action="Index">Home</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+                    @if (ViewBag.ShowLoginForm)
+                    {
+                        <li><a asp-area="" asp-controller="Home" asp-action="Index">Sign Up</a></li>
+                    }
+                    else
+                    {
+                        <li><a asp-area="" asp-controller="Home" asp-action="EditPerson">Welcome, @ViewBag.UserFirstName</a></li>
+
+                    }
                 </ul>
             </div>
         </div>
