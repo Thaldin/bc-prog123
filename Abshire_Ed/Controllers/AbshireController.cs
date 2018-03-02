@@ -3,12 +3,15 @@ using Microsoft.Extensions.Configuration;
 using Abshire_Ed.Models;
 using Abshire_Ed.DAL;
 using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
+using System;
 
 namespace Abshire_Ed.Controllers
 {
     public class AbshireController : Controller
     {
         const string personIdKey = "personId";
+        const string productIdKey = "productId";
         const string firstNameKey = "fName";
 
         private readonly IConfiguration _configuration;
@@ -20,12 +23,7 @@ namespace Abshire_Ed.Controllers
 
         public IActionResult Index()
         {
-            ViewBag.ShowLoginForm = string.IsNullOrEmpty(HttpContext.Session.GetString(personIdKey));
-
-            if (!string.IsNullOrEmpty(HttpContext.Session.GetString(firstNameKey)))
-            {
-                ViewBag.UserFirstName = HttpContext.Session.GetString(firstNameKey);
-            }
+            InitView();
 
             return View();
         }
@@ -50,6 +48,67 @@ namespace Abshire_Ed.Controllers
             }
 
             return View("Index");
+        }
+
+        public IActionResult AddProduct()
+        {
+            InitView();
+
+            if (ViewBag.ShowLoginForm)
+                return Redirect("Index");
+
+            return View();
+        }
+
+        public IActionResult InsertProduct(ProductModel product)
+        {
+            InitView();
+
+            var productDal = new ProductDAL(_configuration);
+            var pId = productDal.InsertProduct(product);
+            HttpContext.Session.SetString(productIdKey, pId.ToString());
+            return View("Product", product);
+        }
+
+        public IActionResult Product(ProductModel product)
+        {
+            InitView();      
+
+            return View(product);
+        }
+
+        public IActionResult EditProduct()
+        {
+            InitView();
+
+            var id = HttpContext.Session.GetString(productIdKey);
+            var productDal = new ProductDAL(_configuration);
+            var product = productDal.GetProduct(Convert.ToInt32(id));
+
+            return View(product);
+        }
+
+        public IActionResult UpdateProduct(ProductModel product)
+        {
+            InitView();
+
+            var productDal = new ProductDAL(_configuration);
+            var id = HttpContext.Session.GetString(productIdKey);
+
+            product.ProductId = Convert.ToInt32(id);
+            productDal.UpdateProduct(product);
+
+            return View("Product", product);
+        }
+
+        private void InitView()
+        {
+            ViewBag.ShowLoginForm = string.IsNullOrEmpty(HttpContext.Session.GetString(personIdKey));
+
+            if (!string.IsNullOrEmpty(HttpContext.Session.GetString(firstNameKey)))
+            {
+                ViewBag.UserFirstName = HttpContext.Session.GetString(firstNameKey);
+            }
         }
     }
 }

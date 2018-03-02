@@ -1,0 +1,25 @@
+﻿
+@{
+    ViewData["Title"] = "Product";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model Abshire_Ed.Models.ProductModel
+
+<!doctype html>
+<html>
+<head>
+    <title>Product Information</title>
+</head>
+
+<body>
+    <h2>Product Information</h2>
+    <br />
+    Product: @Model.Name<br />
+    Description: @Model.Description<br />
+    Price: @Model.Price<br />
+    Inventory Amount: @Model.InventoryAmount<br />
+
+    <p><a href="@Url.Action("EditProduct", "Abshire")">Edit Product Info</a></p>
+    <p><a href="@Url.Action("DeleteProduct", "Abshire")">Delete Product</a></p>
+</body>
+</html>
