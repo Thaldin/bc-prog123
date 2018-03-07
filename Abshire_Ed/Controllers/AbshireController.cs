@@ -3,7 +3,6 @@ using Microsoft.Extensions.Configuration;
 using Abshire_Ed.Models;
 using Abshire_Ed.DAL;
 using Microsoft.AspNetCore.Http;
-using System.Collections.Generic;
 using System;
 
 namespace Abshire_Ed.Controllers
@@ -55,7 +54,10 @@ namespace Abshire_Ed.Controllers
             InitView();
 
             if (ViewBag.ShowLoginForm)
-                return Redirect("Index");
+            {
+                ViewBag.LoginMessage = "User not logged in.";
+                return View("Index");
+            }
 
             return View();
         }
