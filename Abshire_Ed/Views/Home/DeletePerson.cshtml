@@ -3,23 +3,13 @@
 }
 @model Abshire_Ed.Models.PersonModel
 
-<!DOCTYPE html>
+<h2>Person Deleted</h2>
+<br />
+First Name: @Model.FirstName<br />
+Last Name: @Model.LastName<br />
+Email: @Model.Email<br />
+Phone: @Model.Phone<br />
+Address: @Model.Address<br />
+Username: @Model.Username<br />
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>DeletePerson</title>
-</head>
-<body>
-    <h1>Person Deleted</h1>
-    <br />
-    First Name: @Model.FirstName<br />
-    Last Name: @Model.LastName<br />
-    Email: @Model.Email<br />
-    Phone: @Model.Phone<br />
-    Address: @Model.Address<br />
-    Username: @Model.Username<br />
-
-    <a href="@Url.Action("Index", "Home")">Return Home</a>
-</body>
-</html>
+<a href="@Url.Action("Index", "Home")">Return Home</a>

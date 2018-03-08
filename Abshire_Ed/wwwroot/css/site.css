@@ -37,3 +37,48 @@
 #errorMsg {
     color: red;
 }
+
+.productHeader {
+    font-weight: bolder;
+    clear: both;
+}
+
+.product {
+    font-weight: normal;
+    clear: both;
+}
+
+.productName, .productDesc, .productPrice, .productInv, .productId, .productEdit, .productDelete {
+    float: left;
+    margin-left: 5px;
+}
+
+.productName {
+    width: 200px;
+}
+
+.productDesc {
+    width: 400px;
+}
+
+.productPrice {
+    width: 80px;
+}
+
+.productInv {
+    width: 75px;
+    text-align: center;
+}
+
+.productId {
+    width: 75px;
+    text-align: center;
+}
+
+.productEdit {
+    width: 30px;
+}
+
+.productDelete {
+    width: 40px;
+}

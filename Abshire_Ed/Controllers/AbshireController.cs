@@ -53,12 +53,6 @@ namespace Abshire_Ed.Controllers
         {
             InitView();
 
-            if (ViewBag.ShowLoginForm)
-            {
-                ViewBag.LoginMessage = "User not logged in.";
-                return View("Index");
-            }
-
             return View();
         }
 
@@ -68,7 +62,6 @@ namespace Abshire_Ed.Controllers
 
             var productDal = new ProductDAL(_configuration);
             var pId = productDal.InsertProduct(product);
-            HttpContext.Session.SetString(productIdKey, pId.ToString());
             return View("Product", product);
         }
 
@@ -79,13 +72,12 @@ namespace Abshire_Ed.Controllers
             return View(product);
         }
 
-        public IActionResult EditProduct()
+        public IActionResult EditProduct(string PID)
         {
             InitView();
 
-            var id = HttpContext.Session.GetString(productIdKey);
             var productDal = new ProductDAL(_configuration);
-            var product = productDal.GetProduct(Convert.ToInt32(id));
+            var product = productDal.GetProduct(Convert.ToInt32(PID));
 
             return View(product);
         }
@@ -95,12 +87,44 @@ namespace Abshire_Ed.Controllers
             InitView();
 
             var productDal = new ProductDAL(_configuration);
-            var id = HttpContext.Session.GetString(productIdKey);
-
-            product.ProductId = Convert.ToInt32(id);
             productDal.UpdateProduct(product);
 
             return View("Product", product);
+        }
+
+        public IActionResult DeleteProduct(string PID)
+        {
+            InitView();
+
+            var productDal = new ProductDAL(_configuration);
+            var product = productDal.GetProduct(Convert.ToInt32(PID));
+            productDal.DeleteProduct(PID);
+
+            return View("DeleteProduct", product);
+        }
+
+        public IActionResult ProductList()
+        {
+            InitView();
+
+            if (ViewBag.ShowLoginForm)
+            {
+                ViewBag.LoginMessage = "User not logged in.";
+                return View("Index");
+            }
+
+            var productDal = new ProductDAL(_configuration);
+            var productList = productDal.GetAllProducts();
+            return View(productList);
+        }
+
+        public IActionResult ShowProducts()
+        {
+            InitView();
+
+            var productDal = new ProductDAL(_configuration);
+            var productList = productDal.GetAllProducts();
+            return View(productList);
         }
 
         private void InitView()

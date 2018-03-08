@@ -139,6 +139,86 @@ namespace Abshire_Ed.DAL
             }
         }
 
+        public void DeleteProduct(string id)
+        {
+            const string productDelete = "DELETE FROM dbo.Products WHERE [PID] = @ProductId";
+
+            SqlConnection conn = null;
+
+            try
+            {
+                // Get Sql Connection
+                conn = GetConnection(_connStrKey);
+                conn.Open();
+
+                // Delete Product
+                var sqlCmd = new SqlCommand(productDelete, conn);
+                sqlCmd.Parameters.AddWithValue("@ProductId", Convert.ToInt32(id));
+                sqlCmd.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Error deleting product from the database: " + e.Message, e);
+            }
+            finally
+            {
+                if (conn != null && conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                }
+            }
+        }
+
+        public List<ProductModel> GetAllProducts()
+        {
+            const string productSelect = "SELECT * FROM dbo.Products";
+
+            SqlConnection conn = null;
+
+            try
+            {
+                // Get Sql Connection
+                conn = GetConnection(_connStrKey);
+                conn.Open();
+
+                // Delete Product
+                var sqlCmd = new SqlCommand(productSelect, conn);
+                var sqlReader = sqlCmd.ExecuteReader();
+
+                var productList = new List<ProductModel>();
+
+                while (sqlReader.Read())
+                {
+                    var product = new ProductModel()
+                    {
+                        Name = sqlReader["name"].ToString(),
+                        Description = sqlReader["Description"].ToString(),
+                        Price = float.Parse(sqlReader["Price"].ToString()),
+                        InventoryAmount = (int)sqlReader["InventoryAmount"],
+                        ProductId = (int)sqlReader["PID"]
+
+                    };
+
+                    productList.Add(product);
+                }
+
+                sqlReader.Close();
+
+                return productList;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Error getting product list from the database: " + e.Message, e);
+            }
+            finally
+            {
+                if (conn != null && conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                }
+            }
+        }
+
         private SqlConnection GetConnection(string connKey)
         {
             // Get Connection
