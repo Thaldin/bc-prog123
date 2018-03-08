@@ -165,7 +165,8 @@ namespace Abshire_Ed.DAL
                     Address = sqlReader["address"].ToString(),
                     Email = sqlReader["email"].ToString(),
                     Phone = sqlReader["phone"].ToString(),
-                    Username = sqlReader["username"].ToString()
+                    Username = sqlReader["username"].ToString(),
+                    PersonId = (int)sqlReader["PersonId"]
                 };
                 
                 sqlReader.Close();

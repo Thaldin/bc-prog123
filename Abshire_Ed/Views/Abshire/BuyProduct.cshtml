@@ -1,0 +1,16 @@
+﻿
+@{
+    ViewData["Title"] = "BuyProduct";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model Abshire_Ed.Models.PurchaseModel
+
+<h2>Thank You For Your Purchase</h2>
+<br />
+Thank you for your purchase, @Model.Person.FirstName <br/>
+We have charged your credit card @Model.Product.Price.ToString("C") and are shipping it to <em>@Model.Person.Address</em><br />
+<br />
+Your transaction id is @Model.SalesId
+<br />
+Please come back again.  Suzuki loves his commissions.<br />
+

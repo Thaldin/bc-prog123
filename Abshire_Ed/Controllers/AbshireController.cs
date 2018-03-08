@@ -130,6 +130,44 @@ namespace Abshire_Ed.Controllers
             return View(productList);
         }
 
+        public IActionResult BuyProduct(string PID)
+        {
+            InitView();
+
+            if (ViewBag.ShowLoginForm)
+            {
+                ViewBag.LoginMessage = "User not logged in.";
+                return View("Index");
+            }
+
+            var productDal = new ProductDAL(_configuration);
+            var product = productDal.GetProduct(Convert.ToInt32(PID));
+            productDal.UpdateInventory(product, 1);
+
+            var personDal = new PersonDAL(_configuration);
+            var person = personDal.GetPerson(HttpContext.Session.GetString(personIdKey));
+
+            var transactionDal = new TransactionDAL(_configuration);
+            var txn = new SaleTransactionModel()
+            {
+                PersonId = person.PersonId,
+                ProductId = product.ProductId,
+                TransactionTime = DateTime.Now,
+                Quantity = 1 
+            };
+
+            var tranId = transactionDal.InsertTransaction(txn);
+
+            var purchase = new PurchaseModel()
+            {
+                Person = person,
+                Product = product,
+                SalesId = tranId
+            };
+
+            return View(purchase);
+        }
+
         private void InitView()
         {
             ViewBag.ShowLoginForm = string.IsNullOrEmpty(HttpContext.Session.GetString(personIdKey));

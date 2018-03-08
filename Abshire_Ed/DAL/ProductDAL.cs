@@ -139,6 +139,38 @@ namespace Abshire_Ed.DAL
             }
         }
 
+        public void UpdateInventory(ProductModel product, int quantity)
+        {
+            const string inventoryUpdate = "UPDATE [dbo].[Products] SET [InventoryAmount] = @InvAmount WHERE [PID] = @id";
+
+            SqlConnection conn = null;
+
+            try
+            {
+                // Get Sql Connection
+                conn = GetConnection(_connStrKey);
+                conn.Open();
+
+                // Insert into Person table
+                var sqlCmd = new SqlCommand(inventoryUpdate, conn);
+                sqlCmd.Parameters.AddWithValue("@InvAmount", (product.InventoryAmount - quantity));
+                sqlCmd.Parameters.AddWithValue("@id", product.ProductId.ToString());
+
+                sqlCmd.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Error updating product inventory in the database: " + e.Message, e);
+            }
+            finally
+            {
+                if (conn != null && conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                }
+            }
+        }
+
         public void DeleteProduct(string id)
         {
             const string productDelete = "DELETE FROM dbo.Products WHERE [PID] = @ProductId";
