@@ -24,6 +24,9 @@ namespace Abshire_Ed.Controllers
         {
             InitView();
 
+            if (!ViewBag.ShowLoginForm)
+                return RedirectToAction("ShowProducts");
+
             return View();
         }
 
@@ -46,7 +49,7 @@ namespace Abshire_Ed.Controllers
                 ViewBag.LoginMessage = string.Empty;
             }
 
-            return View("Index");
+            return RedirectToAction("Index");
         }
 
         public IActionResult AddProduct()

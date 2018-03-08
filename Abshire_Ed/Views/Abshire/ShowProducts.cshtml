@@ -28,7 +28,7 @@ else
             <div class="productPrice">@product.Price.ToString("C")</div>
             <div class="productInv">@product.InventoryAmount</div>
             <div class="productId">@product.ProductId</div>
-            <div class="productEdit"><a href="@Url.Action("BuyProduct", "Abshire", new { PID = product.ProductId })">1-Click Buy!</a></div>
+            <div class="productBuy"><a href="@Url.Action("BuyProduct", "Abshire", new { PID = product.ProductId })">1-Click Buy!</a></div>
         </div>
     }
 }
