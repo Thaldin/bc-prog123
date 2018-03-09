@@ -28,11 +28,12 @@ namespace Abshire_Ed.Controllers
 
         public IActionResult Page2(PersonModel person)
         {
-            InitView();
-
             var personDal = new PersonDAL(_configuration);
             int personId = personDal.InsertPerson(person);
             HttpContext.Session.SetString(personIdKey, personId.ToString());
+            HttpContext.Session.SetString(firstNameKey, person.FirstName);
+            InitView();
+
             return View(person);
         }
 

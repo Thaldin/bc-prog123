@@ -47,9 +47,10 @@ namespace Abshire_Ed.Controllers
                 ViewBag.UserFirstName = compact.FirstName;
                 ViewBag.ShowLoginForm = false;
                 ViewBag.LoginMessage = string.Empty;
+                return RedirectToAction("Index");
             }
 
-            return RedirectToAction("Index");
+            return View("Index");
         }
 
         public IActionResult AddProduct()

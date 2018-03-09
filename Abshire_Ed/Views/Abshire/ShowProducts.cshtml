@@ -22,14 +22,22 @@ else
     </div>
     @foreach (var product in Model)
     {
-        <div class="product">
-            <div class="productName">@product.Name</div>
-            <div class="productDesc">@product.Description</div>
-            <div class="productPrice">@product.Price.ToString("C")</div>
-            <div class="productInv">@product.InventoryAmount</div>
-            <div class="productId">@product.ProductId</div>
-            <div class="productBuy"><a href="@Url.Action("BuyProduct", "Abshire", new { PID = product.ProductId })">1-Click Buy!</a></div>
-        </div>
+    <div class="product">
+        <div class="productName">@product.Name</div>
+        <div class="productDesc">@product.Description</div>
+        <div class="productPrice">@product.Price.ToString("C")</div>
+        <div class="productInv">@product.InventoryAmount</div>
+        <div class="productId">@product.ProductId</div>
+        @if (product.InventoryAmount > 0)
+    {
+        <div class="productBuy"><a href="@Url.Action("BuyProduct", "Abshire", new { PID = product.ProductId })">1-Click Buy!</a></div>
+}
+else
+{
+    <div class="productBuy">Restocking</div>
+
+}
+    </div>
     }
 }
 <br />
