@@ -7,7 +7,7 @@
 
 @if (ViewBag.ShowLoginForm)
 {
-    <h2>Please sign in</h2>
+    <h2 class="signinHeader">Please sign in</h2>
     <form id="signin" asp-action="Login" method="post">
         <div id="userNameLogin">
             <label for="username">User Name:</label><input id="username" type="text" asp-for="UserName" />
@@ -15,9 +15,11 @@
         <div id="passwordLogin">
             <label for="password">Password:</label><input id="password" type="password" asp-for="Password" />
         </div>
-        <div>
-            <button type="submit">Submit</button>
+        <div id="submit">
+            <button id="submit" type="submit">Submit</button>
         </div>
-        <label id="errorMsg">@ViewBag.LoginMessage</label>
+        <div id="errorMsg">
+            <label>@ViewBag.LoginMessage</label>
+        </div>
     </form>
 }

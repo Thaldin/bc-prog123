@@ -24,6 +24,11 @@ namespace Abshire_Ed.DAL
 
             SqlConnection conn = null;
 
+            if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(pwd))
+            {
+                return null;
+            }
+
             try
             {
                 // Get Sql Connection

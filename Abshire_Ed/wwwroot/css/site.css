@@ -86,3 +86,24 @@
 .productBuy {
     width: 100px;
 }
+
+.signinHeader {
+    text-align: center;
+}
+#passwordLogin, #userNameLogin, #errorMsg {
+    text-align: center;
+}
+div > label, form > label {
+    width: 125px;
+}
+
+div#errorMsg > label {
+    width: 100%;
+}
+
+#submit {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    text-align:center;
+    border: none;
+}
