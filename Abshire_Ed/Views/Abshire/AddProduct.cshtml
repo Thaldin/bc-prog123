@@ -1,0 +1,20 @@
+﻿
+@{
+    ViewData["Title"] = "AddProduct";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model Abshire_Ed.Models.ProductModel;
+
+<h2>Add a new product</h2>
+<form id="Product" asp-action="InsertProduct" method="post">
+    <label for="productName">Product Name: </label>
+    <input id="productName" type="text" asp-for="Name" /><br />
+    <label for="description">Description: </label>
+    <input id="description" type="text" asp-for="Description" /><br />
+    <label for="price">Price: </label>
+    <input id="price" type="text" asp-for="Price" /><br />
+    <label for="invAmount">InventoryAmount: </label>
+    <input id="invAmount" type="text" asp-for="InventoryAmount" /><br />
+    <button type="submit">Submit</button>
+</form>
+

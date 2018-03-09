@@ -28,11 +28,12 @@ namespace Abshire_Ed.Controllers
 
         public IActionResult Page2(PersonModel person)
         {
-            InitView();
-
             var personDal = new PersonDAL(_configuration);
             int personId = personDal.InsertPerson(person);
             HttpContext.Session.SetString(personIdKey, personId.ToString());
+            HttpContext.Session.SetString(firstNameKey, person.FirstName);
+            InitView();
+
             return View(person);
         }
 
@@ -66,9 +67,18 @@ namespace Abshire_Ed.Controllers
             InitView();
 
             var id = HttpContext.Session.GetString(personIdKey);
-            var personDal = new PersonDAL(_configuration);
-            var person = personDal.GetPerson(id);
-            personDal.DeletePerson(id);
+            PersonModel person = null;
+            try
+            {
+                var personDal = new PersonDAL(_configuration);
+                person = personDal.GetPerson(id);
+                personDal.DeletePerson(id);
+                ViewBag.ErrorMessage = string.Empty;
+            }
+            catch (Exception)
+            {
+                ViewBag.ErrorMessage = "Error Deleting Person from Database";
+            }
 
             return View(person);
         }

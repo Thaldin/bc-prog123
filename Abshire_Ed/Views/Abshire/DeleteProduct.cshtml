@@ -1,0 +1,20 @@
+﻿
+@{
+    ViewData["Title"] = "DeleteProduct";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model Abshire_Ed.Models.ProductModel
+
+<h2>Product Deleted</h2>
+<label class="errorMsg">@ViewBag.ErrorMessage</label>
+
+<br />
+Product Name: @Model.Name<br />
+Description: @Model.Description<br />
+Price: @Model.Price<br />
+Inventory Amount: @Model.InventoryAmount<br />
+Product Id: @Model.ProductId<br />
+
+<a href="@Url.Action("ProductList", "Abshire")">Return to Product List</a>
+
+

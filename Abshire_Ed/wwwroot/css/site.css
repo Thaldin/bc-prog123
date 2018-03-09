@@ -34,6 +34,77 @@
     }
 }
 
-#errorMsg {
+.productHeader {
+    font-weight: bolder;
+    clear: both;
+}
+
+.product {
+    font-weight: normal;
+    clear: both;
+}
+
+.productName, .productDesc, .productPrice, .productInv, .productId, .productEdit, .productDelete, .productBuy {
+    float: left;
+    margin-left: 5px;
+}
+
+.productName {
+    width: 200px;
+}
+
+.productDesc {
+    width: 400px;
+}
+
+.productPrice {
+    width: 80px;
+}
+
+.productInv {
+    width: 75px;
+    text-align: center;
+}
+
+.productId {
+    width: 50px;
+    text-align: center;
+}
+
+.productEdit {
+    width: 30px;
+}
+
+.productDelete {
+    width: 40px;
+}
+
+.productBuy {
+    width: 100px;
+}
+
+.signinHeader {
+    text-align: center;
+}
+#passwordLogin, #userNameLogin, #errorMsg {
+    text-align: center;
+}
+div > label, form > label {
+    width: 125px;
+}
+
+div.errorMsg > label {
+    width: 100%;
+}
+
+.errorMsg {
     color: red;
+    width: 100%;
+}
+
+#submit {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    text-align:center;
+    border: none;
 }

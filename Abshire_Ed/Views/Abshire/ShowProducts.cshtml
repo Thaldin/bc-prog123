@@ -1,0 +1,43 @@
+﻿`
+@{
+    ViewData["Title"] = "ShowProducts";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model List<ProductModel>
+
+<h2>View & Purchase Products</h2>
+
+@if (Model.Count == 0)
+{
+    <h4>No Products</h4>
+}
+else
+{
+    <div class="productHeader">
+        <div class="productName">Product Name</div>
+        <div class="productDesc">Description</div>
+        <div class="productPrice">Price</div>
+        <div class="productInv">Inventory</div>
+        <div class="productId">Id</div>
+    </div>
+    @foreach (var product in Model)
+    {
+    <div class="product">
+        <div class="productName">@product.Name</div>
+        <div class="productDesc">@product.Description</div>
+        <div class="productPrice">@product.Price.ToString("C")</div>
+        <div class="productInv">@product.InventoryAmount</div>
+        <div class="productId">@product.ProductId</div>
+        @if (product.InventoryAmount > 0)
+    {
+        <div class="productBuy"><a href="@Url.Action("BuyProduct", "Abshire", new { PID = product.ProductId })">1-Click Buy!</a></div>
+}
+else
+{
+    <div class="productBuy">Restocking</div>
+
+}
+    </div>
+    }
+}
+<br />

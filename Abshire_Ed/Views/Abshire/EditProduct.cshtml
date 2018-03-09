@@ -1,0 +1,22 @@
+﻿
+@{
+    ViewData["Title"] = "EditProduct";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model Abshire_Ed.Models.ProductModel;
+
+<h2>Edit this product</h2>
+<form id="UpdateProduct" asp-action="UpdateProduct" method="post">
+    <label for="productName">Product Name: </label>
+    <input id="productName" type="text" asp-for="Name" /><br />
+    <label for="description">Description: </label>
+    <input id="description" type="text" asp-for="Description" /><br />
+    <label for="price">Price: </label>
+    <input id="price" type="text" asp-for="Price" /><br />
+    <label for="invAmount">InventoryAmount: </label>
+    <input id="invAmount" type="text" asp-for="InventoryAmount" /><br />
+    <input id="productId" type="text" asp-for="ProductId" hidden="hidden" /><br />
+    <button type="submit">Update</button>
+</form>
+

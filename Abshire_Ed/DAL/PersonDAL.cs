@@ -24,6 +24,11 @@ namespace Abshire_Ed.DAL
 
             SqlConnection conn = null;
 
+            if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(pwd))
+            {
+                return null;
+            }
+
             try
             {
                 // Get Sql Connection
@@ -73,26 +78,39 @@ namespace Abshire_Ed.DAL
             const string credsDelete = "DELETE FROM dbo.Credentials WHERE [PersonID] = @PersonId ";
 
             SqlConnection conn = null;
+            SqlTransaction sqlTxn = null;
 
             try
             {
                 // Get Sql Connection
                 conn = GetConnection(_connStrKey);
                 conn.Open();
-
+                sqlTxn = conn.BeginTransaction("DeletePerson");
+                
                 // Delete Credentials
-                var sqlCmd = new SqlCommand(credsDelete, conn);
+                var sqlCmd = new SqlCommand(credsDelete, conn, sqlTxn);
                 sqlCmd.Parameters.AddWithValue("@PersonId", Convert.ToInt32(id));
                 sqlCmd.ExecuteNonQuery();
 
                 // Delete Person
-                sqlCmd = new SqlCommand(personDelete, conn);
+                sqlCmd = new SqlCommand(personDelete, conn, sqlTxn);
                 sqlCmd.Parameters.AddWithValue("@PersonId", Convert.ToInt32(id));
                 sqlCmd.ExecuteNonQuery();
+                sqlTxn.Commit();
             }
             catch (Exception e)
             {
-                throw new Exception("Error delting record from the database: " + e.Message, e);
+                var sqlMsg = string.Empty;
+
+                try
+                {
+                    sqlTxn.Rollback();
+                }
+                catch (Exception)
+                {
+                    sqlMsg = "Error rolling back transaction";
+                }
+                throw new Exception("Error deleting record from the database: " + e.Message + " " + sqlMsg, e);
             }
             finally
             {
@@ -165,7 +183,8 @@ namespace Abshire_Ed.DAL
                     Address = sqlReader["address"].ToString(),
                     Email = sqlReader["email"].ToString(),
                     Phone = sqlReader["phone"].ToString(),
-                    Username = sqlReader["username"].ToString()
+                    Username = sqlReader["username"].ToString(),
+                    PersonId = (int)sqlReader["PersonId"]
                 };
                 
                 sqlReader.Close();

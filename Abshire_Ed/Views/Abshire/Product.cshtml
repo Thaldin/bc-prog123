@@ -1,0 +1,28 @@
+﻿
+@{
+    ViewData["Title"] = "Product";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model Abshire_Ed.Models.ProductModel
+
+<!doctype html>
+<html>
+<head>
+    <title>Product Information</title>
+</head>
+
+<body>
+    <h2>Product Information</h2>
+    <br />
+    Product: @Model.Name<br />
+    Description: @Model.Description<br />
+    Price: @Model.Price<br />
+    Inventory Amount: @Model.InventoryAmount<br />
+    Product Id: @Model.ProductId<br />
+    <hr />
+    <p><a href="@Url.Action("AddProduct", "Abshire")">Add Another Product</a></p>
+    <p><a href="@Url.Action("EditProduct", "Abshire", new { PID = Model.ProductId })">Edit Product Info</a></p>
+    <p><a href="@Url.Action("DeleteProduct", "Abshire", new { PID = Model.ProductId })">Delete Product</a></p>
+    <p><a href="@Url.Action("ProductList", "Abshire")">Product List</a></p>
+</body>
+</html>
