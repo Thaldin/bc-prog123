@@ -71,7 +71,7 @@ namespace Abshire_Ed.Controllers
 
         public IActionResult Product(ProductModel product)
         {
-            InitView();      
+            InitView();
 
             return View(product);
         }
@@ -99,10 +99,20 @@ namespace Abshire_Ed.Controllers
         public IActionResult DeleteProduct(string PID)
         {
             InitView();
+            ProductModel product = null;
 
-            var productDal = new ProductDAL(_configuration);
-            var product = productDal.GetProduct(Convert.ToInt32(PID));
-            productDal.DeleteProduct(PID);
+            try
+            {
+                var productDal = new ProductDAL(_configuration);
+                product = productDal.GetProduct(Convert.ToInt32(PID));
+                productDal.DeleteProduct(PID);
+                ViewBag.ErrorMessage = string.Empty;
+            }
+            catch (Exception)
+            {
+                ViewBag.ErrorMessage = "Unable to delete product from database";
+            }
+
 
             return View("DeleteProduct", product);
         }
@@ -154,7 +164,7 @@ namespace Abshire_Ed.Controllers
                 PersonId = person.PersonId,
                 ProductId = product.ProductId,
                 TransactionTime = DateTime.Now,
-                Quantity = 1 
+                Quantity = 1
             };
 
             var tranId = transactionDal.InsertTransaction(txn);

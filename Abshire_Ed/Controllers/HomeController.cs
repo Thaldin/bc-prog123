@@ -67,9 +67,18 @@ namespace Abshire_Ed.Controllers
             InitView();
 
             var id = HttpContext.Session.GetString(personIdKey);
-            var personDal = new PersonDAL(_configuration);
-            var person = personDal.GetPerson(id);
-            personDal.DeletePerson(id);
+            PersonModel person = null;
+            try
+            {
+                var personDal = new PersonDAL(_configuration);
+                person = personDal.GetPerson(id);
+                personDal.DeletePerson(id);
+                ViewBag.ErrorMessage = string.Empty;
+            }
+            catch (Exception)
+            {
+                ViewBag.ErrorMessage = "Error Deleting Person from Database";
+            }
 
             return View(person);
         }

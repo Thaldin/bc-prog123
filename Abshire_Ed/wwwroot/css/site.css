@@ -34,10 +34,6 @@
     }
 }
 
-#errorMsg {
-    color: red;
-}
-
 .productHeader {
     font-weight: bolder;
     clear: both;
@@ -97,7 +93,12 @@ div > label, form > label {
     width: 125px;
 }
 
-div#errorMsg > label {
+div.errorMsg > label {
+    width: 100%;
+}
+
+.errorMsg {
+    color: red;
     width: 100%;
 }
 
